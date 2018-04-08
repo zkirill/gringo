@@ -6,8 +6,8 @@ import (
 	"net"
 
 	"github.com/golang/glog"
-	"rivendell.getfillet.com/mimblewimble/client/handshake"
-	"rivendell.getfillet.com/mimblewimble/client/seeds"
+	"github.com/zkirill/mimblewimble-go/handshake"
+	"github.com/zkirill/mimblewimble-go/seeds"
 )
 
 // port is the port on which we connect to the seed.
