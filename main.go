@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/zkirill/mimblewimble-go/handshake"
+	"github.com/zkirill/mimblewimble-go/message"
 	"github.com/zkirill/mimblewimble-go/seeds"
 )
 
@@ -39,14 +40,14 @@ func main() {
 	glog.Infof("wrote %v bytes", n)
 	// Wait for and read the second "shake" part of the handshake.
 	for {
-		var h handshake.Header
+		var h message.Header
 		if err := h.Read(con); err != nil {
 			glog.Errorf("could not read header: %v", err)
 			break
 		}
 		glog.Infof("read header with magic 1 %v, magic 2 %v, msg len %v, for message type %v", h.Magic1, h.Magic2, h.Length, h.MsgType)
-		if h.MsgType == handshake.MsgTypeShake {
-			var s handshake.Shake
+		if h.MsgType == message.MsgTypeShake {
+			var s message.Shake
 			if err := s.Read(con); err != nil {
 				glog.Errorf("could not read shake: %v", err)
 				break
