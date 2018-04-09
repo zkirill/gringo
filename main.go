@@ -46,14 +46,42 @@ func main() {
 			break
 		}
 		glog.Infof("read header with magic 1 %v, magic 2 %v, msg len %v, for message type %v", h.Magic1, h.Magic2, h.Length, h.MsgType)
-		if h.MsgType == message.MsgTypeShake {
+		switch h.MsgType {
+		case message.MsgTypePing:
+			// Received ping.
+			var m message.Ping
+			if err := m.Read(con); err != nil {
+				glog.Errorf("could not read ping: %v", err)
+				break
+			}
+			glog.Infof("read ping with difficulty %v, height %v", m.TotalDifficulty, m.Height)
+			// Send pong.
+			var p message.Ping
+			// Mirror the sender.
+			p.Height = m.Height
+			p.TotalDifficulty = m.TotalDifficulty
+			if err := p.Write(true, con); err != nil {
+				glog.Errorf("could not send pong: %v", err)
+				break
+			}
+			glog.Info("sent pong")
+		case message.MsgTypeShake:
+			// Received shake.
 			var s message.Shake
 			if err := s.Read(con); err != nil {
 				glog.Errorf("could not read shake: %v", err)
 				break
 			}
 			glog.Infof("read shake from user agent %v", s.UserAgent)
-			break
+		default:
+			// Catch all other messages and read to the end.
+			b := make([]byte, h.Length)
+			n, err := con.Read(b)
+			if err != nil {
+				glog.Errorf("could not read message: %v", err)
+				break
+			}
+			glog.Infof("read %v bytes", n)
 		}
 	}
 	if err := con.Close(); err != nil {

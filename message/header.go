@@ -50,6 +50,27 @@ func (h *Header) Read(r io.Reader) error {
 	return nil
 }
 
+// Write writes the header values to the writer.
+func (h *Header) Write(msgType MsgType, msgLen uint64, w io.Writer) error {
+	// Magic 1.
+	if err := binary.Write(w, binary.BigEndian, Magic1); err != nil {
+		return fmt.Errorf("could not write first magic byte: %v", err)
+	}
+	// Magic 2.
+	if err := binary.Write(w, binary.BigEndian, Magic2); err != nil {
+		return fmt.Errorf("could not write second magic byte: %v", err)
+	}
+	// Type of message.
+	if err := binary.Write(w, binary.BigEndian, msgType); err != nil {
+		return fmt.Errorf("could not write message type: %v", err)
+	}
+	// Length of message body.
+	if err := binary.Write(w, binary.BigEndian, msgLen); err != nil {
+		return fmt.Errorf("could not write message body length: %v", err)
+	}
+	return nil
+}
+
 // NewHeader returns new header.
 func NewHeader(msgType MsgType, msgLen uint64) (bytes.Buffer, error) {
 	var b bytes.Buffer
