@@ -10,6 +10,13 @@ import (
 // HeaderLen is the expected length of the header.
 const HeaderLen int = 11
 
+const (
+	// Magic1 is the first magic byte.
+	Magic1 uint8 = 0x1e
+	// Magic2 is the second magic byte.
+	Magic2 uint8 = 0xc5
+)
+
 // Header is the message header.
 type Header struct {
 	// Magic1 is the first magic byte.
@@ -44,18 +51,18 @@ func (h *Header) Read(r io.Reader) error {
 }
 
 // NewHeader returns new header.
-func NewHeader(msgLen uint64) (bytes.Buffer, error) {
+func NewHeader(msgType MsgType, msgLen uint64) (bytes.Buffer, error) {
 	var b bytes.Buffer
 	// Magic 1.
-	if err := binary.Write(&b, binary.BigEndian, uint8(0x1e)); err != nil {
+	if err := binary.Write(&b, binary.BigEndian, Magic1); err != nil {
 		return bytes.Buffer{}, err
 	}
 	// Magic 2.
-	if err := binary.Write(&b, binary.BigEndian, uint8(0xc5)); err != nil {
+	if err := binary.Write(&b, binary.BigEndian, Magic2); err != nil {
 		return bytes.Buffer{}, err
 	}
 	// Type of message.
-	if err := binary.Write(&b, binary.BigEndian, uint8(MsgTypeHand)); err != nil {
+	if err := binary.Write(&b, binary.BigEndian, msgType); err != nil {
 		return bytes.Buffer{}, err
 	}
 	// Length of message body.

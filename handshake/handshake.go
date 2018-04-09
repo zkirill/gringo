@@ -6,9 +6,6 @@ import (
 	"github.com/zkirill/mimblewimble-go/message"
 )
 
-// userAgent is the user agent of this client.
-const userAgent = "mimblewimble-go 0.0.1"
-
 // NewHandshake new handshake returns a new handshake.
 func NewHandshake() ([]byte, error) {
 	hand, err := message.NewHand()
@@ -16,7 +13,7 @@ func NewHandshake() ([]byte, error) {
 		return nil, err
 	}
 	len := hand.Len()
-	header, err := message.NewHeader(uint64(len))
+	header, err := message.NewHeader(message.MsgTypeHand, uint64(len))
 	if err != nil {
 		return nil, err
 	}
