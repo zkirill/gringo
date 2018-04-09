@@ -5,9 +5,9 @@ import (
 	"net"
 
 	"github.com/golang/glog"
-	"github.com/zkirill/mimblewimble-go/handshake"
-	"github.com/zkirill/mimblewimble-go/message"
-	"github.com/zkirill/mimblewimble-go/seeds"
+	"github.com/zkirill/gringo/handshake"
+	"github.com/zkirill/gringo/message"
+	"github.com/zkirill/gringo/seeds"
 )
 
 // port is the port on which we connect to the seed.

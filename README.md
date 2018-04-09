@@ -1,8 +1,8 @@
-# mimblewimble-go
-[![GoDoc Reference](https://godoc.org/github.com/zkirill/mimblewimble-go?status.svg)](https://godoc.org/github.com/zkirill/mimblewimble-go)
-[![Build Status](https://travis-ci.org/zkirill/mimblewimble-go.svg?branch=master)](https://travis-ci.org/zkirill/mimblewimble-go)
-[![Coverage Status](https://coveralls.io/repos/github/zkirill/mimblewimble-go/badge.svg?branch=master)](https://coveralls.io/github/zkirill/mimblewimble-go?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zkirill/mimblewimble-go)](https://goreportcard.com/report/github.com/zkirill/mimblewimble-go)
+# gringo
+[![GoDoc Reference](https://godoc.org/github.com/zkirill/gringo?status.svg)](https://godoc.org/github.com/zkirill/gringo)
+[![Build Status](https://travis-ci.org/zkirill/gringo.svg?branch=master)](https://travis-ci.org/zkirill/gringo)
+[![Coverage Status](https://coveralls.io/repos/github/zkirill/gringo/badge.svg?branch=master)](https://coveralls.io/github/zkirill/gringo?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zkirill/gringo)](https://goreportcard.com/report/github.com/zkirill/gringo)
 
 
 Go (Golang) client for MimbleWimble (Grin)

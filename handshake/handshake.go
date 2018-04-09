@@ -3,7 +3,7 @@ package handshake
 
 import (
 	"github.com/golang/glog"
-	"github.com/zkirill/mimblewimble-go/message"
+	"github.com/zkirill/gringo/message"
 )
 
 // NewHandshake new handshake returns a new handshake.

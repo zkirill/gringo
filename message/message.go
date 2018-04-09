@@ -45,7 +45,7 @@ const (
 )
 
 // userAgent is the user agent of this client.
-const userAgent = "mimblewimble-go 0.0.1"
+const userAgent = "gringo 0.0.1"
 
 // ProtocolVersion is the network protocol version.
 type ProtocolVersion uint32
