@@ -29,6 +29,14 @@ func TestReadBadHeader(t *testing.T) {
 	}
 }
 
+func TestWriteHeader(t *testing.T) {
+	var b bytes.Buffer
+	var h Header
+	if err := h.Write(MsgTypeHand, 0, &b); err != nil {
+		t.Error(err)
+	}
+}
+
 func TestReadGoodHeader(t *testing.T) {
 	msgType := MsgTypeHand
 	var msgLen uint64 = 1
