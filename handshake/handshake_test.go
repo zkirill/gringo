@@ -12,8 +12,13 @@ func TestMakeHandshake(t *testing.T) {
 }
 
 func TestMakeHeader(t *testing.T) {
-	_, err := NewHeader(1)
+	h, err := NewHeader(1)
+	// Make a new header.
 	if err != nil {
 		t.Fatal(err)
+	}
+	// Check the length of the header.
+	if h.Len() != HeaderLen {
+		t.Errorf("wrong header length: expecting %v, got %v", HeaderLen, h.Len())
 	}
 }

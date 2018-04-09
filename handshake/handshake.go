@@ -14,7 +14,7 @@ import (
 const userAgent = "mimblewimble-go 0.0.1"
 
 // HeaderLen is the expected length of the header.
-const HeaderLen int64 = 11
+const HeaderLen int = 11
 
 // MsgType is the type of the message.
 type MsgType uint8
