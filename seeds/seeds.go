@@ -10,3 +10,7 @@ func Seeds() []string {
 		"46.4.91.48",
 	}
 }
+
+// InitialDifficulty is the initial block difficulty for testnet 2.
+// TODO: Move this to the appropriate package.
+const InitialDifficulty uint64 = 1000
