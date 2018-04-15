@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net"
 
 	"github.com/golang/glog"
@@ -15,7 +16,7 @@ const port = 13414
 
 func main() {
 	flag.Parse()
-	seed := seeds.Seeds()[0]
+	seed := seeds.Seeds()[1]
 	raddr := net.TCPAddr{
 		IP:   net.ParseIP(seed),
 		Port: port,
@@ -73,6 +74,21 @@ func main() {
 				break
 			}
 			glog.Infof("read shake from user agent %v", s.UserAgent)
+			if err := RequestPeerAddrs(con); err != nil {
+				glog.Errorf("could not request peer addrs: %v", err)
+				break
+			}
+		case message.MsgTypePeerAddrs:
+			glog.Infof("msg peer addrs")
+			var v message.PeerAddrs
+			if err := v.Read(con); err != nil {
+				glog.Errorf("could not read peers: %v", err)
+				break
+			}
+			glog.Infof("read %v peer addrs", len(v.Peers))
+			if len(v.Peers) > 0 {
+				glog.Infof("first peer: %v", v.Peers[0])
+			}
 		default:
 			// Catch all other messages and read to the end.
 			b := make([]byte, h.Length)
@@ -87,4 +103,15 @@ func main() {
 	if err := con.Close(); err != nil {
 		glog.Fatalf("could not close connection: %v", err)
 	}
+}
+
+// RequestPeerAddrs requests peer addresses.
+func RequestPeerAddrs(con *net.TCPConn) error {
+	var r message.GetPeerAddrs
+	err := r.Write(con)
+	if err != nil {
+		return fmt.Errorf("could not write to connection: %v", err)
+	}
+	glog.Info("requested peer addresses")
+	return nil
 }
