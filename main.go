@@ -112,14 +112,8 @@ func main() {
 			glog.Infof("msg block")
 			var v message.Block
 			if err := v.Read(con); err != nil {
-				glog.Errorf("could not read headers: %v", err)
+				glog.Errorf("could not read block: %v", err)
 				break
-			}
-			glog.Infof("read %v headers", len(v.Headers))
-			if len(v.Headers) > 0 {
-				glog.Infof("first header difficulty: %v", v.Headers[0].TotalDifficulty)
-				glog.Infof("first header nonce: %v", v.Headers[0].Nonce)
-				glog.Infof("first header pow: %v", v.Headers[0].ProofOfWork)
 			}
 		default:
 			// Catch all other messages and read to the end.
