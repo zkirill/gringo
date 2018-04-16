@@ -74,8 +74,14 @@ func main() {
 				break
 			}
 			glog.Infof("read shake from user agent %v", s.UserAgent)
-			if err := RequestPeerAddrs(con); err != nil {
-				glog.Errorf("could not request peer addrs: %v", err)
+			// Request peer addresses.
+			// if err := RequestPeerAddrs(con); err != nil {
+			// 	glog.Errorf("could not request peer addrs: %v", err)
+			// 	break
+			// }
+			// Request block headers.
+			if err := RequestBlockHeaders(con); err != nil {
+				glog.Errorf("could not request block headers: %v", err)
 				break
 			}
 		case message.MsgTypePeerAddrs:
@@ -88,6 +94,32 @@ func main() {
 			glog.Infof("read %v peer addrs", len(v.Peers))
 			if len(v.Peers) > 0 {
 				glog.Infof("first peer: %v", v.Peers[0])
+			}
+		case message.MsgTypeHeaders:
+			glog.Infof("msg headers")
+			var v message.BlockHeaders
+			if err := v.Read(con); err != nil {
+				glog.Errorf("could not read headers: %v", err)
+				break
+			}
+			glog.Infof("read %v headers", len(v.Headers))
+			if len(v.Headers) > 0 {
+				glog.Infof("first header difficulty: %v", v.Headers[0].TotalDifficulty)
+				glog.Infof("first header nonce: %v", v.Headers[0].Nonce)
+				glog.Infof("first header pow: %v", v.Headers[0].ProofOfWork)
+			}
+		case message.MsgTypeBlock:
+			glog.Infof("msg block")
+			var v message.Block
+			if err := v.Read(con); err != nil {
+				glog.Errorf("could not read headers: %v", err)
+				break
+			}
+			glog.Infof("read %v headers", len(v.Headers))
+			if len(v.Headers) > 0 {
+				glog.Infof("first header difficulty: %v", v.Headers[0].TotalDifficulty)
+				glog.Infof("first header nonce: %v", v.Headers[0].Nonce)
+				glog.Infof("first header pow: %v", v.Headers[0].ProofOfWork)
 			}
 		default:
 			// Catch all other messages and read to the end.
@@ -113,5 +145,25 @@ func RequestPeerAddrs(con *net.TCPConn) error {
 		return fmt.Errorf("could not write to connection: %v", err)
 	}
 	glog.Info("requested peer addresses")
+	return nil
+}
+
+// RequestBlockHeaders requests block headers.
+func RequestBlockHeaders(con *net.TCPConn) error {
+	var r message.GetHeaders
+	err := r.Write(con)
+	if err != nil {
+		return fmt.Errorf("could not write to connection: %v", err)
+	}
+	glog.Info("requested headers")
+	return nil
+}
+
+// RequestBlock requests block headers.
+func RequestBlock(hash message.Hash, con *net.TCPConn) error {
+	if err := message.GetBlock(hash, con); err != nil {
+		return fmt.Errorf("could not write to connection: %v", err)
+	}
+	glog.Info("requested block")
 	return nil
 }
